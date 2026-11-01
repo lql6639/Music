@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "compilerOptions": {
+    "types": ["node"] // 添加 node 类型定义
+  },
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
+}

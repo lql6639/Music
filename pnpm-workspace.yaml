@@ -1,0 +1,8 @@
+allowBuilds:
+  core-js: true
+  cpu-features: true
+  es5-ext: true
+  esbuild: true
+  less: true
+  ssh2: true
+  vue-demi: true

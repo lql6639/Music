@@ -11,6 +11,7 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
+import { startCheckUpdate } from './utils/checkUpdate'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -18,3 +19,6 @@ app.use(pinia)
 app.use(router)
 
 app.mount('#app')
+
+// 每 30s 自动检测新版本，发现更新后清理本地缓存并刷新
+startCheckUpdate()

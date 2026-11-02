@@ -29,10 +29,32 @@ requests.interceptors.request.use((config) => {
   return config
 })
 
-// 响应拦截器：返回 res.data 而非完整 axios 响应
+// 将网易云 CDN 返回的 http:// 资源地址（图片、歌曲等）升级为 https://，避免 HTTPS 页面的 Mixed Content 警告
+function upgradeMixedContent(data: unknown): unknown {
+  const walk = (value: unknown): unknown => {
+    if (typeof value === 'string') {
+      return value.startsWith('http://') && value.includes('.music.126.net')
+        ? `https://${value.slice(7)}`
+        : value
+    }
+    if (Array.isArray(value)) return value.map(walk)
+    if (value && typeof value === 'object') {
+      const out: Record<string, unknown> = {}
+      for (const key of Object.keys(value as Record<string, unknown>)) {
+        out[key] = walk((value as Record<string, unknown>)[key])
+      }
+      return out
+    }
+    return value
+  }
+  return walk(data)
+}
+
+// 响应拦截器：返回 res.data 而非完整 axios 响应，并升级混合内容链接
 requests.interceptors.response.use(
   (res) => {
-    return res.data
+    // 升级混合内容链接；拦截器约定返回 res.data，类型与原逻辑保持一致
+    return upgradeMixedContent(res.data) as typeof res.data
   },
   (error) => {
     console.error('请求错误:', error.message)

@@ -157,7 +157,7 @@ getComments()
 
       .content {
         font-size: 12px;
-        width: calc(100%-12rem);
+        width: calc(100% - 12rem);
       }
 
       .deletable {
